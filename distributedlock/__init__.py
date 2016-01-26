@@ -1,7 +1,7 @@
 # encoding: utf-8
 from __future__ import with_statement
 from distributedlock.memcachedlock import MemcachedLock
-
+from six import string_types
 DEBUG = True
 DEFAULT_TIMEOUT=60
 DEFAULT_BLOCKING=True
@@ -12,7 +12,7 @@ __all__ = [ 'LockNotAcquiredError', 'distributedlock' ]
 
 def _debug(msg):
     if DEBUG:
-        print "LOCK:", msg
+        print("LOCK:", msg)
 
 
 class LockNotAcquiredError(Exception):
@@ -44,7 +44,7 @@ class distributedlock(object):
     
     # for use with "with" block
     def __enter__(self):
-        if not (type(self.key) == str or type(self.key) == unicode) and self.key == '':
+        if not isinstance(self.key, string_types) or self.key == '':
             raise RuntimeError("Key not specified!")
             
         if self.lock.acquire(self.blocking):
