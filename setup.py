@@ -6,7 +6,7 @@ import os
 class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = '-s -v'.split() + [ 'tests/%s' % test for test in filter(lambda f: f.endswith('.py'), os.listdir('tests')) ]
+        self.test_args = '-s -v'.split() + [ 'tests/%s' % test for test in [f for f in os.listdir('tests') if f.endswith('.py')] ]
         self.test_suite = True
 
     def run_tests(self):
